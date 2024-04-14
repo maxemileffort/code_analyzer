@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Issue Analyzer</title>
+    <link rel="stylesheet" href="style.css">
+    
+</head>
+<body>
+    <div class="container">
+        <h1>GitHub Issue Analyzer</h1>
+        <button id="apiKeyButton">Add/Change API Key</button>
+        <div id="apiKeyModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Enter API Key</h2>
+                <input type="text" id="apiKeyInput" placeholder="Enter your OpenAI API key here">
+                <button id="saveApiKey">Save API Key</button>
+            </div>
+        </div>
+        
+        <div class="upload-section">
+            <label for="codeFiles">Upload Code Files:</label>
+            <input type="file" id="codeFiles" name="codeFiles" multiple accept=".js,.py,.java,.ts,.tsx,.html">
+        </div>
+
+        <div class="issue-input">
+            <label for="issueText">Paste GitHub Issue:</label>
+            <textarea id="issueText" name="issueText" rows="5"></textarea>
+        </div>
+
+        <div class="row">
+            <button id="ingestButton">Ingest Code</button>
+            <button id="analyzeButton">Analyze Issue</button>
+            <button id="scanButton">Scan Code</button>
+            <button id="solutionButton">Find Solutions</button>
+        </div>
+        
+        <div class="output-section">
+            <h2>Analysis Report:</h2>
+            <div id="analysisResult" class="result-box"></div>
+            <h2>Possible Solutions:</h2>
+            <div id="solutions" class="result-box"></div>
+            <h2>Coded Solutions:</h2>
+            <div id="codedSolutions" class="result-box"></div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
