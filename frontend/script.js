@@ -192,17 +192,27 @@ async function requestCodedSolutions(){
 
 }
 
-function updateTargetResultsBox(target, responseMsg, idx = 0){
+// function updateTargetResultsBox(target, responseMsg, idx = 0){
 
-    responseMsg = responseMsg.replace('\n', '</p><p>');
+//     responseMsg = responseMsg.replace('\n', '</p><p>');
+
+//     const targetResultDiv = document.getElementById(target);
+//     if (idx === 0){
+//         targetResultDiv.innerHTML = ``;
+//         targetResultDiv.innerHTML = `<p><strong>Response ${idx+1}:</strong> ${responseMsg}</p>`;
+//     } else {
+//         targetResultDiv.innerHTML += `<p><strong>Response ${idx+1}:</strong> ${responseMsg}</p>`;
+//     }
+// }
+
+function updateTargetResultsBox(target, responseMsg, idx = 0){
 
     const targetResultDiv = document.getElementById(target);
     if (idx === 0){
         targetResultDiv.innerHTML = ``;
-        targetResultDiv.innerHTML = `<p><strong>Response ${idx+1}:</strong> ${responseMsg}</p>`;
-    } else {
-        targetResultDiv.innerHTML += `<p><strong>Response ${idx+1}:</strong> ${responseMsg}</p>`;
-    }
+    } 
+
+    targetResultDiv.innerHTML += marked(`**Response ${idx+1}:** ${responseMsg} \n`);
 }
 
 // function updateAnalysisResultsBox(responseMsg, idx = 0){
