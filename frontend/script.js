@@ -2,6 +2,7 @@ var apiKey = '';
 var conversationContext = [];
 var model = "gpt-3.5-turbo";
 var codeChunks = [];
+var highProbBlocks = [];
 
 function getSystemPrompt(){
     let systemPrompt = "You are an amazing web and app developer.";
@@ -11,13 +12,13 @@ function getSystemPrompt(){
     return systemPrompt;
 }
 
-function checkAndTrunc(conversationArray) {
+async function checkAndTrunc(conversationArray) {
     const joinedContext = conversationArray.map(item => item.content).join(" ");
     console.log('joinedContext:')
     console.log(joinedContext)
     console.log(`Joined context length: ${joinedContext.length}`);
 
-    if (joinedContext.length > 25000) {
+    if (joinedContext.length > 20000) {
         // If greater than 25k, remove the first element
         conversationArray.shift();
         console.log(`Context too long, truncating. New length of array: ${conversationArray.length}`);
@@ -105,18 +106,18 @@ async function showIssue(issueText){
 async function checkChunkAgainstIssue(chunk, chunkIdx, issueText){
 
     let chunkPrompt = issueText;
-    chunkPrompt += "\n\n How pertinent is the following code block to the above issue?";    
-    chunkPrompt += "\n\n";
+    chunkPrompt += "\n How pertinent is the following code block to the above issue?";    
+    chunkPrompt += "\n";
     chunkPrompt += chunk[0];
-    chunkPrompt += "\n\n please respond simply with either 'high probability', 'medium probability' ";
-    chunkPrompt += "or 'low probability', based on your own perception of how likely this code";
-    chunkPrompt += " block affects the issue.";
+    chunkPrompt += "\n Please respond simply with only 2 words: either 'high probability', 'medium probability' ";
+    chunkPrompt += "or 'low probability'. This abservation should be based on your own perception of how likely this code";
+    chunkPrompt += " block affects the issue. Please restrict your response to as few words as possible.";
 
     conversationContext.push({
         'role':'user',
         'content': chunkPrompt});
 
-    conversationContext = checkAndTrunc(conversationContext);
+    conversationContext = await checkAndTrunc(conversationContext);
 
     let data = buildPayload(model, conversationContext);
     
@@ -128,6 +129,10 @@ async function checkChunkAgainstIssue(chunk, chunkIdx, issueText){
 
     // updateAnalysisResultsBox(resp + ` (${chunk[1]})`, chunkIdx);
     updateTargetResultsBox('analysisResult', resp + ` (${chunk[1]})`, chunkIdx)
+
+    if (resp.includes('high probability')||resp.includes('high pertinence')){
+        highProbBlocks.push(chunk[1])
+    }
 
     return resp;
 

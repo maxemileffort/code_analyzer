@@ -1,1 +1,5 @@
 *.txt
+backend/extracted_files
+backend/target_files
+*.zip
+backend/__pycache__
